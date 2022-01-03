@@ -1,9 +1,8 @@
 ### CONFIGURATION
 config = {
     # GLOBAL CONFIG
-    "token": "DISCORD_BOT_TOKEN", # Replace that value with your Discord bot token, available on https://discord.com/developers/applications
+    "token": "ODc4NTgwNDU2NzA5MjkyMDUz.YSDP0A.r9rVd2_M2Vyk1M7-NgzL1w7FPrI", # Replace that value with your Discord bot token, available on https://discord.com/developers/applications
     "prefix": "--", # Replace that value with the prefix of your bot, for example . or /
-    "onRunMessages": True, # Replace that with "False" if you don't want to get a message when it will run, with "True" if you want to.
     "shards": 1, # Replace that with the value you want for shards (I recommend using one per 100 servers)
 
     # MESSAGES CONFIG
@@ -20,7 +19,18 @@ config = {
 ### PROGRAM
 import discord
 from discord.ext import commands
+import logging
+from datetime import datetime
 
+
+# Logging
+logging.basicConfig(filename="logs/" + datetime.now().strftime("%h-%d-%y") + ".txt",
+                        filemode='a',
+                        format='[%(asctime)s,%(msecs)d] [%(name)s] [%(levelname)s] [%(message)s]',
+                        datefmt='%H:%M:%S',
+                        level=logging.DEBUG
+)
+
+# Bot
 bot = commands.AutoShardedBot(command_prefix=config["prefix"], shard_count=config["shards"])
-
 bot.run(config["token"])
