@@ -33,4 +33,9 @@ logging.basicConfig(filename="logs/" + datetime.now().strftime("%h-%d-%y") + ".t
 
 # Bot
 bot = commands.AutoShardedBot(command_prefix=config["prefix"], shard_count=config["shards"])
+
+@bot.event
+async def on_ready():
+    logging.info("Logged into Discord.")
+
 bot.run(config["token"])
