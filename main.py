@@ -4,6 +4,7 @@ config = {
     "token": "ODc4NTgwNDU2NzA5MjkyMDUz.YSDP0A.r9rVd2_M2Vyk1M7-NgzL1w7FPrI", # Replace that value with your Discord bot token, available on https://discord.com/developers/applications
     "prefix": "--", # Replace that value with the prefix of your bot, for example . or /
     "shards": 1, # Replace that with the value you want for shards (I recommend using one per 100 servers)
+    "waitForRegiser": 180, # Replace that value with the time you want to wait before saving xp into database
 
     # MESSAGES CONFIG
     "addMessageMin": 3, # Replace that value with the minimum amount of points a person will get per message
@@ -18,13 +19,14 @@ config = {
 
 ### PROGRAM
 import discord
-from discord.ext import commands
+from discord.ext import commands, tasks
 import logging
 from datetime import datetime
 import random
 import sqlite3
 
 # SQLite Init
+toadd = {} # This will contains everything to add in the database
 conn = sqlite3.open("xp.db")
 curson = conn.cursor()
 
@@ -47,6 +49,7 @@ async def on_ready():
 @bot.event 
 async def on_message(message):
     xp = random.randint(config["addMessageMin"], config["addMessageMax"])
+    toadd[message.author.id] = xp
     logging.debug(f"{message.author.id} got {xp} xp.")
 
 bot.run(config["token"])
