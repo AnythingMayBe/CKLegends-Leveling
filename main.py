@@ -52,7 +52,7 @@ async def on_ready():
         db = conn.execute("SELECT * FROM content WHERE guild=" + str(id) + ";")
         for thing in db:
             toadd[thing[0]][thing[1]] = thing[2]
-    print(str(toadd))
+    logging.info("Registered database.")
 
 
 @bot.event 
