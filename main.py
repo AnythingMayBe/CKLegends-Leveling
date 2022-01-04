@@ -21,6 +21,7 @@ import discord
 from discord.ext import commands
 import logging
 from datetime import datetime
+import random
 
 
 # Logging
@@ -37,5 +38,10 @@ bot = commands.AutoShardedBot(command_prefix=config["prefix"], shard_count=confi
 @bot.event
 async def on_ready():
     logging.info("Logged into Discord.")
+
+@bot.event 
+async def on_message(message):
+    xp = random.randint(config["addMessageMin"], config["addMessageMax"])
+    logging.debug(f"{message.author.id} got {xp} xp.")
 
 bot.run(config["token"])
