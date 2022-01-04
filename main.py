@@ -44,10 +44,10 @@ bot = commands.AutoShardedBot(command_prefix=config["prefix"], shard_count=confi
 
 @bot.event
 async def on_ready():
+    logging.info("Logged into Discord.")
     # Get guilds
     for guild in bot.guilds:
         toadd[guild.id] = None
-    logging.info("Logged into Discord.")
 
 
 @bot.event 
