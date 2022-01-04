@@ -47,7 +47,12 @@ async def on_ready():
     logging.info("Logged into Discord.")
     # Get guilds
     for guild in bot.guilds:
-        toadd[guild.id] = None
+        toadd[guild.id] = {}
+    for id in toadd:
+        db = conn.execute("SELECT * FROM content WHERE guild=" + str(id) + ";")
+        for thing in db:
+            toadd[thing[0]][thing[1]] = thing[2]
+    print(str(toadd))
 
 
 @bot.event 
