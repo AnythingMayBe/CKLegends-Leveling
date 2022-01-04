@@ -22,6 +22,11 @@ from discord.ext import commands
 import logging
 from datetime import datetime
 import random
+import sqlite3
+
+# SQLite Init
+conn = sqlite3.open("xp.db")
+curson = conn.cursor()
 
 
 # Logging
