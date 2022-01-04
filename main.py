@@ -26,6 +26,7 @@ import random
 import sqlite3
 
 # SQLite Init
+toadd = {}
 conn = sqlite3.connect("xp.db")
 curson = conn.cursor()
 
@@ -43,6 +44,9 @@ bot = commands.AutoShardedBot(command_prefix=config["prefix"], shard_count=confi
 
 @bot.event
 async def on_ready():
+    # Get guilds
+    for guild in bot.guilds:
+        toadd[guild.id] = None
     logging.info("Logged into Discord.")
 
 
