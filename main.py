@@ -27,7 +27,7 @@ import sqlite3
 
 # SQLite Init
 toadd = {} # This will contains everything to add in the database
-conn = sqlite3.open("xp.db")
+conn = sqlite3.connect("xp.db")
 curson = conn.cursor()
 
 
@@ -45,6 +45,7 @@ bot = commands.AutoShardedBot(command_prefix=config["prefix"], shard_count=confi
 @bot.event
 async def on_ready():
     logging.info("Logged into Discord.")
+
 
 @bot.event 
 async def on_message(message):
