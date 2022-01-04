@@ -26,7 +26,6 @@ import random
 import sqlite3
 
 # SQLite Init
-toadd = {} # This will contains everything to add in the database
 conn = sqlite3.connect("xp.db")
 curson = conn.cursor()
 
@@ -50,7 +49,7 @@ async def on_ready():
 @bot.event 
 async def on_message(message):
     xp = random.randint(config["addMessageMin"], config["addMessageMax"])
-    toadd[message.author.id] = xp
+    toadd[message.guild.id][message.author.id] = xp
     logging.debug(f"{message.author.id} got {xp} xp.")
 
 bot.run(config["token"])
