@@ -58,7 +58,10 @@ async def on_ready():
 @bot.event 
 async def on_message(message):
     xp = random.randint(config["addMessageMin"], config["addMessageMax"])
-    toadd[message.guild.id][message.author.id] = xp
+    try:
+        toadd[message.guild.id][message.author.id] += xp
+    except KeyError:
+        toadd[message.guild.id][message.author.id] = 0
     logging.debug(f"{message.author.id} got {xp} xp.")
 
 bot.run(config["token"])
