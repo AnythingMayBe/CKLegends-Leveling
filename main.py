@@ -1,22 +1,3 @@
-### CONFIGURATION
-config = {
-    # GLOBAL CONFIG
-    "token": "ODc4NTgwNDU2NzA5MjkyMDUz.YSDP0A.r9rVd2_M2Vyk1M7-NgzL1w7FPrI", # Replace that value with your Discord bot token, available on https://discord.com/developers/applications
-    "prefix": "--", # Replace that value with the prefix of your bot, for example . or /
-    "shards": 1, # Replace that with the value you want for shards (I recommend using one per 100 servers)
-    "waitForRegiser": 300, # Replace that value with the time you want to wait before saving xp into database
-
-    # MESSAGES CONFIG
-    "addMessageMin": 3, # Replace that value with the minimum amount of points a person will get per message
-    "addMessageMax": 5, # Replace that value with the maximum amount of points a person will get per message
-    "messagesWaitForNextXp": 30.0, # Replace that value with the time you want to wait before someone can get more points per messages
-
-    # VOICE CONFIG
-    "voiceXpRewardMin": 6, # Replace that value with the minimum amount of points a person will get by being in a voice channel.
-    "voiceXpRewardMax": 8, # Replace that value with the maximum amount of points a person will get by being in a voice channel.
-    "voixeWaitForNextXp": 60.0 # Replace that value with the time you want to wait before someone can get more points for being in voice channel.
-}
-
 ### PROGRAM
 import discord
 from discord.ext import commands, tasks
@@ -24,6 +5,7 @@ import logging
 from datetime import datetime
 import random
 import sqlite3
+from config import config
 
 # SQLite Init
 toadd = {}
@@ -77,4 +59,8 @@ async def on_message(message):
         toadd[message.guild.id][message.author.id] = 0
     logging.debug(f"{message.author.id} got {xp} xp.")
 
-bot.run(config["token"])
+try:
+    bot.run(config["token"])
+except discord.errors.LoginFailure as e:
+    logging.critical("The provided token is invalid - " + str(e))
+    print("The token your provided in the configuration is invalid, please replace it with a valid Discord bot token. If you don't know what that means, please contact us.")
