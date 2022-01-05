@@ -40,7 +40,9 @@ bot = commands.AutoShardedBot(command_prefix=config["prefix"], shard_count=confi
 
 @bot.event
 async def on_ready():
-    logging.info("Logged into Discord.")
+    logging.info("Logged into Discord with " + str(bot.user.id))
+    await bot.change_presence(status = discord.Status.idle, activity=discord.Activity(type=discord.ActivityType.watching, name=config["registeringStatus"]))
+
     # Get guilds
     for guild in bot.guilds:
         toadd[guild.id] = {}
@@ -48,6 +50,7 @@ async def on_ready():
         db = conn.execute("SELECT * FROM content WHERE guild=" + str(id) + ";")
         for thing in db:
             toadd[thing[0]][thing[1]] = thing[2]
+    await bot.change_presence(status = discord.Status.online, activity=discord.Activity(type=discord.ActivityType.watching, name=config["loadedStatus"]))
     logging.info("Registered database.")
     registerDatabase.start()
 
@@ -65,7 +68,7 @@ async def on_message(message):
     if _returned == True: return # Return the function if the user didn't passed timeoçut
 
     waitForMessages[message.author.id] = time() # Reset timeout
-    
+
     # Add xp
     xp = randint(config["addMessageMin"], config["addMessageMax"])
     try:
