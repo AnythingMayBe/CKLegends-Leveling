@@ -7,7 +7,6 @@ from random import randint
 import sqlite3
 from config import config
 from time import time
-import threading
 
 # SQLite Init
 toadd = {}
@@ -88,3 +87,5 @@ try:
 except discord.errors.LoginFailure as e:
     logging.critical("The provided token is invalid - " + str(e))
     print("The token your provided in the configuration is invalid, please replace it with a valid Discord bot token. If you don't know what that means, please contact us.")
+
+# Administration commands
