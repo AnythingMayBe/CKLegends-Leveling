@@ -3,12 +3,13 @@ import discord
 from discord.ext import commands, tasks
 import logging
 from datetime import datetime
-import random
+from random import randint
 import sqlite3
 from config import config
 
 # SQLite Init
 toadd = {}
+waitForMessages = {} 
 conn = sqlite3.connect("xp.db")
 cursor = conn.cursor()
 
@@ -52,7 +53,7 @@ async def on_ready():
 
 @bot.event 
 async def on_message(message):
-    xp = random.randint(config["addMessageMin"], config["addMessageMax"])
+    xp = randint(config["addMessageMin"], config["addMessageMax"])
     try:
         toadd[message.guild.id][message.author.id] += xp
     except KeyError:
