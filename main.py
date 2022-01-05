@@ -7,6 +7,7 @@ from random import randint
 import sqlite3
 from config import config
 from time import time
+import threading
 
 # SQLite Init
 toadd = {}
@@ -14,18 +15,21 @@ waitForMessages = {}
 conn = sqlite3.connect("xp.db")
 cursor = conn.cursor()
 
-@tasks.loop(seconds = config["waitForRegiser"])
-async def registerDatabase():
-    logging.info("Started registering xp into database.")
+def registerDatabase():
+    logging.info("Started saving xp into database.")
     for guild in toadd:
-        logging.debug("Started registering xp for guild " + str(guild))
+        logging.debug("Started saving xp for guild " + str(guild))
         for user in toadd[guild]:
             conn.execute("DELETE FROM content WHERE ID = " + str(user) + ";")
             conn.execute("INSERT INTO content(guild, id, xp) VALUES(" + str(guild) + "," + str(user) + "," + str(toadd[guild][user]) + ");")
-            logging.debug("Registered " + str(toadd[guild][user]) + " xp for user " + str(user) + " in guild " + str(guild) + ".")
-        logging.debug("Ended registering xp for guild" + str(guild) + ".")
+            logging.debug("Saved " + str(toadd[guild][user]) + " xp for user " + str(user) + " in guild " + str(guild) + ".")
+        logging.debug("Ended save of xp for guild" + str(guild) + ".")
     conn.commit()
-    logging.info("Ended registering xp into database.")
+    logging.info("Ended save of xp into database.")
+
+@tasks.loop(seconds = config["waitForRegiser"])
+async def registerDatabaseTask():
+    registerDatabase()
 
 # Logging
 logging.basicConfig(filename="logs/" + datetime.now().strftime("%h-%d-%y") + ".txt",
@@ -52,7 +56,7 @@ async def on_ready():
             toadd[thing[0]][thing[1]] = thing[2]
     await bot.change_presence(status = discord.Status.online, activity=discord.Activity(type=discord.ActivityType.watching, name=config["loadedStatus"]))
     logging.info("Registered database.")
-    registerDatabase.start()
+    registerDatabaseTask.start()
 
 
 @bot.event 
@@ -79,6 +83,8 @@ async def on_message(message):
 
 try:
     bot.run(config["token"])
+    logging.critical("The bot has shut down. Saving database.")
+    registerDatabase()
 except discord.errors.LoginFailure as e:
     logging.critical("The provided token is invalid - " + str(e))
     print("The token your provided in the configuration is invalid, please replace it with a valid Discord bot token. If you don't know what that means, please contact us.")
