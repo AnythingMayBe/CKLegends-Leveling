@@ -67,8 +67,8 @@ async def on_message(message):
             logging.debug("The user ID " + str(message.author.id) + "didn't got their xp. (" + str(waitForMessages[message.author.id]) + " + " + str(config["messageWaitforNextXp"] + " < " + time()) + ")")
             
     except KeyError:
-        logging.debug("Inited message wait time for user ID " + str(message.author.id))
-    if _returned == True: return # Return the function if the user didn't passed timeoçut
+        logging.debug("Inited or Timeouted message wait time for user ID " + str(message.author.id))
+    if _returned == True: return # Return the function if the user didn't passed timeout
 
     waitForMessages[message.author.id] = time() # Reset timeout
 
@@ -87,5 +87,3 @@ try:
 except discord.errors.LoginFailure as e:
     logging.critical("The provided token is invalid - " + str(e))
     print("The token your provided in the configuration is invalid, please replace it with a valid Discord bot token. If you don't know what that means, please contact us.")
-
-# Administration commands
