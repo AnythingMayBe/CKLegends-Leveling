@@ -6,6 +6,7 @@ from datetime import datetime
 from random import randint
 import sqlite3
 from config import config
+from time import time
 
 # SQLite Init
 toadd = {}
@@ -53,6 +54,19 @@ async def on_ready():
 
 @bot.event 
 async def on_message(message):
+    _returned = False
+    try:
+        if waitForMessages[message.author.id] + config["messagesWaitForNextXp"] > time():
+            _returned = True
+            logging.debug("The user ID " + str(message.author.id) + "didn't got their xp. (" + str(waitForMessages[message.author.id]) + " + " + str(config["messageWaitforNextXp"] + " < " + time()) + ")")
+            
+    except KeyError:
+        logging.debug("Inited message wait time for user ID " + str(message.author.id))
+    if _returned == True: return # Return the function if the user didn't passed timeoçut
+
+    waitForMessages[message.author.id] = time() # Reset timeout
+    
+    # Add xp
     xp = randint(config["addMessageMin"], config["addMessageMax"])
     try:
         toadd[message.guild.id][message.author.id] += xp
