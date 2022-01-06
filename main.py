@@ -9,7 +9,7 @@ from config import config
 from time import time
 import re
 
-# Init Init
+# Init
 bot = commands.AutoShardedBot(command_prefix=config["prefix"], shard_count=config["shards"]) # Bot object, used for all actions maded by the bot (not the program)
 sfile = open("security/logs/" + datetime.now().strftime("%h-%d-%y"), 'a') # Security file log
 toadd = {} # Temp variable (saved with SQLite) containing guilds and user xps
