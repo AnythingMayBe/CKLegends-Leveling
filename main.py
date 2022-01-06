@@ -7,6 +7,7 @@ from random import randint
 import sqlite3
 from config import config
 from time import time
+import re
 
 # SQLite Init
 toadd = {}
@@ -40,6 +41,7 @@ logging.basicConfig(filename="logs/" + datetime.now().strftime("%h-%d-%y") + ".t
 
 # Bot
 bot = commands.AutoShardedBot(command_prefix=config["prefix"], shard_count=config["shards"])
+sfile = open("security/logs/" + datetime.now().strftime("%h-%d-%y"), 'a')
 
 @bot.event
 async def on_ready():
@@ -50,9 +52,12 @@ async def on_ready():
     for guild in bot.guilds:
         toadd[guild.id] = {}
     for id in toadd:
-        db = conn.execute("SELECT * FROM content WHERE guild=" + str(id) + ";")
-        for thing in db:
-            toadd[thing[0]][thing[1]] = thing[2]
+        if re.search("/[\t\r\n]|(--[^\r\n]*)|(\/\*[\w\W]*?(?=\*)\*\/)/gi", str(id)) == None:
+            db = conn.execute("SELECT * FROM content WHERE guild=" + str(id) + ";")
+            for thing in db:
+                toadd[thing[0]][thing[1]] = thing[2]
+        else:
+            sfile.write("Guild ID " + str(id) + " matched with our regex detection -- in loading the guilds (line 55).")
     await bot.change_presence(status = discord.Status.online, activity=discord.Activity(type=discord.ActivityType.watching, name=config["loadedStatus"]))
     logging.info("Registered database.")
     registerDatabaseTask.start()
