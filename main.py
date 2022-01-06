@@ -94,6 +94,13 @@ async def on_message(message):
     logging.debug(f"{message.author.id} got {xp} xp.")
     await bot.process_commands(message)
 
+# Admin commands
+@bot.command(aliases = ["admin-stop", "adminstop", "stopadmin", "stop-admin"])
+async def stop(ctx):
+    if ctx.author.id in config["ownerIds"]:
+        await ctx.send(":warning: If you started the bot from an automatic restart script (maded by us), please save the database and stop it by terminating the process (use CTRL+C in the terminal window).")
+        shutdown()
+    
 try:
     bot.run(config["token"])
     logging.critical("The bot has shut down. Saving database.")
