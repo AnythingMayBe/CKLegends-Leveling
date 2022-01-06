@@ -9,7 +9,9 @@ from config import config
 from time import time
 import re
 
-# SQLite Init
+# Init Init
+bot = commands.AutoShardedBot(command_prefix=config["prefix"], shard_count=config["shards"])
+sfile = open("security/logs/" + datetime.now().strftime("%h-%d-%y"), 'a')
 toadd = {}
 waitForMessages = {} 
 conn = sqlite3.connect("xp.db")
@@ -20,9 +22,12 @@ def registerDatabase():
     for guild in toadd:
         logging.debug("Started saving xp for guild " + str(guild))
         for user in toadd[guild]:
-            conn.execute("DELETE FROM content WHERE ID = " + str(user) + ";")
-            conn.execute("INSERT INTO content(guild, id, xp) VALUES(" + str(guild) + "," + str(user) + "," + str(toadd[guild][user]) + ");")
-            logging.debug("Saved " + str(toadd[guild][user]) + " xp for user " + str(user) + " in guild " + str(guild) + ".")
+            if re.search("/[\t\r\n]|(--[^\r\n]*)|(\/\*[\w\W]*?(?=\*)\*\/)/gi", str(user)) == None and re.search("/[\t\r\n]|(--[^\r\n]*)|(\/\*[\w\W]*?(?=\*)\*\/)/gi", str(guild)) == None and re.search("/[\t\r\n]|(--[^\r\n]*)|(\/\*[\w\W]*?(?=\*)\*\/)/gi", str(toadd[guild[user]])) == None:
+                conn.execute("DELETE FROM content WHERE ID = " + str(user) + ";")
+                conn.execute("INSERT INTO content(guild, id, xp) VALUES(" + str(guild) + "," + str(user) + "," + str(toadd[guild][user]) + ");")
+                logging.debug("Saved " + str(toadd[guild][user]) + " xp for user " + str(user) + " in guild " + str(guild) + ".")
+            else:
+                sfile.write(str(user) + " or " + str(guild) + " or " + str(toadd[guild][user]) + " matched with our regex detection on database save (line 25)")
         logging.debug("Ended save of xp for guild" + str(guild) + ".")
     conn.commit()
     logging.info("Ended save of xp into database.")
@@ -40,8 +45,6 @@ logging.basicConfig(filename="logs/" + datetime.now().strftime("%h-%d-%y") + ".t
 )
 
 # Bot
-bot = commands.AutoShardedBot(command_prefix=config["prefix"], shard_count=config["shards"])
-sfile = open("security/logs/" + datetime.now().strftime("%h-%d-%y"), 'a')
 
 @bot.event
 async def on_ready():
