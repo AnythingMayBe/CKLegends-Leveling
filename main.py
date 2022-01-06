@@ -42,6 +42,11 @@ def registerDatabase():
 async def registerDatabaseTask():
     registerDatabase()
 
+def shutdown(): # The function who will be executed when stopping the bot
+    logging.info("Shutting down")
+    registerDatabase()
+    sfile.close()
+
 
 # Bot
 @bot.event
