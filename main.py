@@ -10,12 +10,18 @@ from time import time
 import re
 
 # Init Init
-bot = commands.AutoShardedBot(command_prefix=config["prefix"], shard_count=config["shards"])
-sfile = open("security/logs/" + datetime.now().strftime("%h-%d-%y"), 'a')
-toadd = {}
-waitForMessages = {} 
-conn = sqlite3.connect("xp.db")
-cursor = conn.cursor()
+bot = commands.AutoShardedBot(command_prefix=config["prefix"], shard_count=config["shards"]) # Bot object, used for all actions maded by the bot (not the program)
+sfile = open("security/logs/" + datetime.now().strftime("%h-%d-%y"), 'a') # Security file log
+toadd = {} # Temp variable (saved with SQLite) containing guilds and user xps
+waitForMessages = {} # Temp variable containing users timeout before they can got xp
+conn = sqlite3.connect("xp.db") # Temp variable containing the SQLite connection.
+cursor = conn.cursor() # Temp variable containing the cursor of SQLite database.
+logging.basicConfig(filename="logs/" + datetime.now().strftime("%h-%d-%y") + ".txt",
+                        filemode='a',
+                        format='[%(asctime)s,%(msecs)d] [%(name)s] [%(levelname)s] [%(message)s]',
+                        datefmt='%H:%M:%S',
+                        level=logging.DEBUG
+) # The logging object (used for log everything logged, excepted security logs)
 
 def registerDatabase():
     logging.info("Started saving xp into database.")
@@ -36,16 +42,8 @@ def registerDatabase():
 async def registerDatabaseTask():
     registerDatabase()
 
-# Logging
-logging.basicConfig(filename="logs/" + datetime.now().strftime("%h-%d-%y") + ".txt",
-                        filemode='a',
-                        format='[%(asctime)s,%(msecs)d] [%(name)s] [%(levelname)s] [%(message)s]',
-                        datefmt='%H:%M:%S',
-                        level=logging.DEBUG
-)
 
 # Bot
-
 @bot.event
 async def on_ready():
     logging.info("Logged into Discord with " + str(bot.user.id))
