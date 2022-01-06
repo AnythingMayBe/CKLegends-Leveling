@@ -23,7 +23,8 @@ logging.basicConfig(filename="logs/" + datetime.now().strftime("%h-%d-%y") + ".t
                         level=logging.DEBUG
 ) # The logging object (used for log everything logged, excepted security logs)
 
-def registerDatabase():
+# Functions
+def registerDatabase(): # The fuction who will be executed when saving database
     logging.info("Started saving xp into database.")
     for guild in toadd:
         logging.debug("Started saving xp for guild " + str(guild))
