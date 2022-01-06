@@ -95,7 +95,7 @@ async def on_message(message):
 try:
     bot.run(config["token"])
     logging.critical("The bot has shut down. Saving database.")
-    registerDatabase()
+    shutdown()
 except discord.errors.LoginFailure as e:
     logging.critical("The provided token is invalid - " + str(e))
     print("The token your provided in the configuration is invalid, please replace it with a valid Discord bot token. If you don't know what that means, please contact us.")
