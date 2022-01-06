@@ -46,6 +46,8 @@ def shutdown(): # The function who will be executed when stopping the bot
     logging.info("Shutting down")
     registerDatabase()
     sfile.close()
+    bot.logout()
+    exit()
 
 
 # Bot
@@ -90,6 +92,7 @@ async def on_message(message):
     except KeyError:
         toadd[message.guild.id][message.author.id] = 0
     logging.debug(f"{message.author.id} got {xp} xp.")
+    await bot.process_commands(message)
 
 try:
     bot.run(config["token"])
