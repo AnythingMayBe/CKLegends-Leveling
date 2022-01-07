@@ -8,6 +8,7 @@ config = {
     "registeringStatus": "Registering database", # Replace that value with the status you want to have for your bot when loading database (at start).
     "loadedStatus": "Making you levels up.", # Replace that value with the status you want to have for you bot when it's loaded.
     "ownerIds": [854616353499906049, 699330746686373898], # Replace these values with the values you want for bot owners (they can execute all administrator commands)
+    "ignoredChannels": [929076256513863770, 929076221072003123], # Replace these values with all channel ids you want users to don't get xp in, for example command bots channels.
 
     # MESSAGES CONFIG
     "addMessageMin": 3, # Replace that value with the minimum amount of points a person will get per message.

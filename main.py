@@ -72,6 +72,7 @@ async def on_ready():
 
 @bot.event 
 async def on_message(message):
+    # Check timeout
     _returned = False
     try:
         if waitForMessages[message.author.id] + config["messagesWaitForNextXp"] > time():
@@ -84,6 +85,9 @@ async def on_message(message):
 
     waitForMessages[message.author.id] = time() # Reset timeout
 
+    if message.channel.id in config["ignoredChannels"]: # Check if channel is set to don't be recorded
+        logging.debug("Ignored message from user ID " + str(message.author.id) + " containing \"" + str(message.content) + "\" because it was sent in an ignored channel, " + str(message.channel.id) + ".")
+        return
     # Add xp
     xp = randint(config["addMessageMin"], config["addMessageMax"])
     try:
