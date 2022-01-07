@@ -75,9 +75,9 @@ async def on_message(message):
     # Check timeout
     _returned = False
     try:
-        if waitForMessages[message.author.id] + config["messagesWaitForNextXp"] > time():
+        if waitForMessages[message.author.id] + randint(config["messagesWaitForNextXpMin"], config["messagesWaitForNextXpMax"]) > time():
             _returned = True
-            logging.debug("The user ID " + str(message.author.id) + "didn't got their xp. (" + str(waitForMessages[message.author.id]) + " + " + str(config["messageWaitforNextXp"] + " < " + time()) + ")")
+            logging.debug("The user ID " + str(message.author.id) + "didn't got their xp because it was timeouted.")
             
     except KeyError:
         logging.debug("Inited or Timeouted message wait time for user ID " + str(message.author.id))
