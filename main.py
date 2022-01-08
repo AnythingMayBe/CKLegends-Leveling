@@ -49,17 +49,17 @@ def shutdown(): # The function who will be executed when stopping the bot
     sfile.close()
     exit()
 
-def addxp(guildid, user, channelid, content=None):
+def addxp(guild, user, channelid, content=None):
     if channelid in config["ignoredChannels"]: # Check if channel is set to don't be recorded
-        if content != None: logging.debug("Ignored xp promotion for user ID " + str(user.id) + " containing \"" + str(content) + "\" because it was in an ignored channel, " + str(channelid) + " in guild " + str(guildid) + ".")
-        else: logging.debug("Ignored xp promotion for user ID " + str(user.id) + " because it was in an ignored channel, " + str(channelid)) + " in guild " + str(guildid) + "."
+        if content != None: logging.debug("Ignored xp promotion for user ID " + str(user.id) + " containing \"" + str(content) + "\" because it was in an ignored channel, " + str(channelid) + " in guild " + str(guild.id) + ".")
+        else: logging.debug("Ignored xp promotion for user ID " + str(user.id) + " because it was in an ignored channel, " + str(channelid)) + " in guild " + str(guild.id) + "."
         return
     xp = randint(config["addMessageMin"], config["addMessageMax"])
     try:
-        toadd[guildid][user.id] += xp
+        toadd[guild.id][user.id] += xp
     except KeyError:
-        toadd[guildid][user.id] = 0
-    logging.debug(f"{user.id} got {xp} xp in guild " + str(guildid) + ".")
+        toadd[guild.id][user.id] = 0
+    logging.debug(f"{user.id} got {xp} xp in guild " + str(guild.id) + ".")
 
 # Bot
 @bot.event
@@ -103,7 +103,7 @@ async def on_message(message):
 
     
     # Add xp
-    addxp(message.guild.id, message.author, message.channel.id, message.content)
+    addxp(message.guild, message.author, message.channel.id, message.content)
 
 @tasks.loop(seconds = config["voiceWaitForNextXp"])
 async def voiceXpTask():
@@ -115,7 +115,7 @@ async def voiceXpTask():
                 logging.debug("Starting registering XP for users in voice channel ID " + str(channel.id) + ".")
                 for member in channel.members:
                     print("founded member")
-                    addxp(guild.id, member, channel.id)
+                    addxp(guild, member, channel.id)
             else:
                 logging.debug("Ignored channel ID " + str(channel.id) + " because it wasn't a voice channel.")
 
