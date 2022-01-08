@@ -72,6 +72,7 @@ async def on_ready():
 
 @bot.event 
 async def on_message(message):
+    await bot.process_commands(message)
     # Check timeout
     _returned = False
     try:
@@ -95,7 +96,16 @@ async def on_message(message):
     except KeyError:
         toadd[message.guild.id][message.author.id] = 0
     logging.debug(f"{message.author.id} got {xp} xp.")
-    await bot.process_commands(message)
+    
+@bot.command(aliases=["xp", "niveau", "niveaux", "level"])
+async def levels(ctx, user : discord.User):
+    
+    xp = cursor.execute("SELECT xp FROM content WHERE id=" + str(user.id) + ";")
+    for row in xp:
+        print(str(row[0]))
+    embed=discord.Embed()
+    embed.add_field(name="XP of user " + str(user.name), value=str(row[0]), inline=False)
+    await ctx.send(embed=embed)
 
 # Admin commands
 @bot.command(aliases = ["admin-stop", "adminstop", "stopadmin", "stop-admin", "shutdown", "admin-shutdown", "adminshutdown", "shutdownadmin", "shutdown-admin"])
@@ -103,7 +113,7 @@ async def stop(ctx):
     if ctx.author.id in config["ownerIds"]:
         await ctx.send(":warning: If you started the bot from an automatic restart script (maded by us), please save the database and stop it by terminating the process (use CTRL+C in the terminal window).")
         shutdown()
-    
+
 try:
     bot.run(config["token"])
     logging.critical("The bot has shut down. Saving database.")
