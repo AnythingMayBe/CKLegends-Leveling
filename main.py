@@ -143,6 +143,16 @@ async def stop(ctx):
         await ctx.send(":warning: If you started the bot from an automatic restart script (maded by us), please save the database and stop it by terminating the process (use CTRL+C in the terminal window).")
         shutdown()
 
+@bot.command(aliases=["xpboost", "xp-boost", "boost-xp"])
+async def boostxp(ctx, key, value : int):
+    if ctx.author.id in config["ownerIds"]:
+        if key == "addMessageMin" or key == "addMessageMax" or key == "voiceXpRewardMin" or key == "voiceXpRewardMax":
+            logging.info("Boost XP edited due to request of " + str(ctx.author.id) + ", " + str(key) + " was " + str(config[key]) + " and are now " + str(value))
+            config[key] = value
+            await ctx.send("Boost XP has successfully started. This will reset at next restart.")
+        else:
+            await ctx.send("Please specify the same key as in your config.")
+
 # Errors
 @bot.event
 async def on_command_error(ctx, error):
