@@ -22,3 +22,9 @@ config = {
     "voiceXpRewardMax": 8, # Replace that value with the maximum amount of points a person will get by being in a voice channel.
     "voiceWaitForNextXp": 60.0, # Replace that value with the minimum time you want to wait before someone can get more points for being in voice channel.
 }
+# REWARDS
+rewards = {
+    1000: 929295857105387550,
+    2500: 929295874473996298,
+    5000: 929295887736397864
+}

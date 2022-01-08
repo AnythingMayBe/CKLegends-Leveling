@@ -104,6 +104,12 @@ async def on_message(message):
     
     # Add xp
     addxp(message.guild, message.author, message.channel.id, message.content)
+    
+    # Role Reward
+    for reward in rewards:
+        role = discord.utils.get(message.guild.roles, id=rewards[reward])
+        if toadd[message.guild.id][message.author.id] > reward and role not in message.author.roles:
+            await message.author.add_roles(role)
 
 @tasks.loop(seconds = config["voiceWaitForNextXp"])
 async def voiceXpTask():
