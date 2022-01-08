@@ -165,6 +165,13 @@ async def boostxp(ctx, key, value : int):
         else:
             await ctx.send("Please specify the same key as in your config.")
 
+@bot.command(aliases=["save-db", "save-database", "db-save", "dbsave", "database-save", "savedatabase", "databasesave"])
+async def savedb(ctx):
+    if ctx.author.id in config["ownerIds"]:
+        msg = await ctx.send(":hourglass: Starting saving the database.")
+        registerDatabase()
+        await msg.edit(content=":white_check_mark: Saved database.")
+
 # Errors
 @bot.event
 async def on_command_error(ctx, error):
