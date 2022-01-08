@@ -80,7 +80,7 @@ async def on_ready():
     logging.info("Registered database.")
     registerDatabaseTask.start()
 
-
+# XP
 @bot.event 
 async def on_message(message):
     await bot.process_commands(message)
@@ -100,7 +100,8 @@ async def on_message(message):
     
     # Add xp
     addxp(message.guild.id, message.author.id, message.channel.id, message.content)
-    
+
+# Commands
 @bot.command(aliases=["xp", "niveau", "niveaux", "level"])
 async def levels(ctx, user : discord.User):
     
