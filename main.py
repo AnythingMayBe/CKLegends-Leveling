@@ -35,7 +35,7 @@ def registerDatabase(): # The fuction who will be executed when saving database
                 conn.execute("INSERT INTO content(guild, id, xp) VALUES(" + str(guild) + "," + str(user) + "," + str(toadd[guild][user]) + ");")
                 logging.debug("Saved " + str(toadd[guild][user]) + " xp for user " + str(user) + " in guild " + str(guild) + ".")
             else:
-                sfile.write(str(user) + " or " + str(guild) + " or " + str(toadd[guild][user]) + " variables don't had good types (it musts be int) -- in saving database (line 31)")
+                sfile.write(str(user) + " or " + str(guild) + " or " + str(toadd[guild][user]) + " variables don't had good types (it musts be int) -- in saving database (line 33)")
         logging.debug("Ended save of xp for guild" + str(guild) + ".")
     conn.commit()
     logging.info("Ended save of xp into database.")
@@ -77,7 +77,7 @@ async def on_ready():
             for thing in db:
                 toadd[thing[0]][thing[1]] = thing[2]
         else:
-            sfile.write("Guild ID " + str(id) + " didn't had a good type (it musts be int) -- in loading the guilds (line 61).")
+            sfile.write("Guild ID " + str(id) + " didn't had a good type (it musts be int) -- in loading the guilds (line 75).")
     await bot.change_presence(status = discord.Status.online, activity=discord.Activity(type=discord.ActivityType.watching, name=config["loadedStatus"]))
     logging.info("Registered database.")
 
