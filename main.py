@@ -117,7 +117,7 @@ async def stop(ctx):
 # Errors
 @bot.event
 async def on_command_error(ctx, error):
-    await ctx.send(":x: Your command cannot be executed due to " + str(error))
+    await ctx.send(":x: Your command cannot be executed due to " + str(error) + "\nPlease re-try or contact a staff member.")
     logging.warning("\"" + str(error) + "\" after execution of \"" + str(ctx.message.content) + "\" by user ID " + str(ctx.message.author.id))
 
 try:
