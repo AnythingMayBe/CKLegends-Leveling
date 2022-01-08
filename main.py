@@ -126,7 +126,6 @@ async def voiceXpTask():
             if type(channel) == discord.VoiceChannel:
                 logging.debug("Starting registering XP for users in voice channel ID " + str(channel.id) + ".")
                 for member in channel.members:
-                    print("founded member")
                     addxp(guild, member, channel.id)
             else:
                 logging.debug("Ignored channel ID " + str(channel.id) + " because it wasn't a voice channel.")
@@ -139,13 +138,12 @@ async def levels(ctx, user : discord.User):
         await ctx.send(":x: The provided user is invalid.")
         return
     xp = cursor.execute("SELECT xp FROM content WHERE id=" + str(user.id) + ";")
-    for row in xp:
-        print(str(row[0]))
     embed=discord.Embed()
-    try:
-        embed.add_field(name="XP of user " + str(user.name), value=str(row[0]), inline=False)
-    except UnboundLocalError:
-        embed.add_field(name="XP of user " + str(user.name), value="0", inline=False)
+    for row in xp:
+        try:
+            embed.add_field(name="XP of user " + str(user.name), value=str(row[0]), inline=False)
+        except UnboundLocalError:
+            embed.add_field(name="XP of user " + str(user.name), value="0", inline=False)
     await ctx.send(embed=embed)
 
 # Admin commands
