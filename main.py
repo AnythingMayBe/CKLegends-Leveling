@@ -172,6 +172,12 @@ async def savedb(ctx):
         registerDatabase()
         await msg.edit(content=":white_check_mark: Saved database.")
 
+@bot.command()
+async def setxp(ctx, guild : int, user : int, xp : int):
+    if ctx.author.id in config["ownerIds"]:
+        toadd[guild][user] = xp
+        await ctx.send(":white_check_mark: Successfully changed " + str(user) + " xp to " + str(xp))
+
 # Errors
 @bot.event
 async def on_command_error(ctx, error):
