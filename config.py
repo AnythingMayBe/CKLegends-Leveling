@@ -24,7 +24,7 @@ config = {
 }
 # REWARDS
 rewards = {
-    1000: 929295857105387550,
-    2500: 929295874473996298,
-    5000: 929295887736397864
+    1000: 929295857105387550, # Replace the first value with the minmum amount of xp you want, and replace the second value with the role's id.
+    2500: 929295874473996298, # Replace the first value with the minmum amount of xp you want, and replace the second value with the role's id.
+    5000: 929295887736397864 # Replace the first value with the minmum amount of xp you want, and replace the second value with the role's id.
 }
