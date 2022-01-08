@@ -20,7 +20,5 @@ config = {
     # VOICE CONFIG
     "voiceXpRewardMin": 6, # Replace that value with the minimum amount of points a person will get by being in a voice channel.
     "voiceXpRewardMax": 8, # Replace that value with the maximum amount of points a person will get by being in a voice channel.
-    "voixeWaitForNextXpMin": 55.0, # Replace that value with the minimum time you want to wait before someone can get more points for being in voice channel.
-    "voixeWaitForNextXpMax": 75.0 # Replace that value with the maximum time you want to wait before someone can get more points for being in voice channel.
-    
+    "voiceWaitForNextXp": 60.0, # Replace that value with the minimum time you want to wait before someone can get more points for being in voice channel.
 }
