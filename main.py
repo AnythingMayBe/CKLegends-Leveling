@@ -8,6 +8,7 @@ from random import randint
 import sqlite3
 from config import config, rewards
 from time import time
+from asyncio import sleep
 
 # Init
 bot = commands.AutoShardedBot(command_prefix=config["prefix"], shard_count=config["shards"]) # Bot object, used for all actions maded by the bot (not the program)
@@ -110,6 +111,9 @@ async def on_message(message):
         role = discord.utils.get(message.guild.roles, id=rewards[reward])
         if toadd[message.guild.id][message.author.id] > reward and role not in message.author.roles:
             await message.author.add_roles(role)
+            msg = await message.channel.send(config["rewardMessage"])
+            await sleep(config["rewardMessageDel"])
+            await msg.delete()
 
 @tasks.loop(seconds = config["voiceWaitForNextXp"])
 async def voiceXpTask():

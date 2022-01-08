@@ -21,6 +21,10 @@ config = {
     "voiceXpRewardMin": 6, # Replace that value with the minimum amount of points a person will get by being in a voice channel.
     "voiceXpRewardMax": 8, # Replace that value with the maximum amount of points a person will get by being in a voice channel.
     "voiceWaitForNextXp": 60.0, # Replace that value with the minimum time you want to wait before someone can get more points for being in voice channel.
+
+    # REWARD CONFIG
+    "rewardMessage": ":clap: You got an experience role!", # Replace that with the message you want to be sent when someone got a reward role.
+    "rewardMessageDel": 5 # Replace that with the value you want to wait before the reward message got deleted.
 }
 # REWARDS
 rewards = {
