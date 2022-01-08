@@ -1,5 +1,6 @@
 ### PROGRAM
 import discord
+from discord.channel import VoiceChannel
 from discord.ext import commands, tasks
 import logging
 from datetime import datetime
@@ -78,7 +79,10 @@ async def on_ready():
             sfile.write("Guild ID " + str(id) + " didn't had a good type (it musts be int) -- in loading the guilds (line 61).")
     await bot.change_presence(status = discord.Status.online, activity=discord.Activity(type=discord.ActivityType.watching, name=config["loadedStatus"]))
     logging.info("Registered database.")
+
+    # Tasks
     registerDatabaseTask.start()
+    voiceXpTask.start()
 
 # XP
 @bot.event 
@@ -100,6 +104,20 @@ async def on_message(message):
     
     # Add xp
     addxp(message.guild.id, message.author.id, message.channel.id, message.content)
+
+@tasks.loop(seconds = config["voiceWaitForNextXp"])
+async def voiceXpTask():
+    logging.debug("Started finding guilds for promoting voice XP")
+    for guild in bot.guilds:
+        logging.debug("Started promoting xp in guild " + str(guild.id))
+        for channel in guild.channels:
+            if type(channel) == discord.VoiceChannel:
+                logging.debug("Starting registering XP for users in voice channel ID " + str(channel.id) + ".")
+                for member in channel.members:
+                    print("founded member")
+                    addxp(guild.id, member.id, channel.id)
+            else:
+                logging.debug("Ignored channel ID " + str(channel.id) + " because it wasn't a voice channel.")
 
 # Commands
 @bot.command(aliases=["xp", "niveau", "niveaux", "level"])
