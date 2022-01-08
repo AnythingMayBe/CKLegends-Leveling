@@ -114,6 +114,8 @@ async def on_message(message):
             msg = await message.channel.send(config["rewardMessage"])
             await sleep(config["rewardMessageDel"])
             await msg.delete()
+            c = discord.utils.get(message.guild.channels, id=config["rewardChannelsAnnouncement"])
+            await c.send(":clap: " + message.author.name + " got the role `" + str(role.name) + "` for their activity. Thanks!")
 
 @tasks.loop(seconds = config["voiceWaitForNextXp"])
 async def voiceXpTask():

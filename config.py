@@ -24,7 +24,8 @@ config = {
 
     # REWARD CONFIG
     "rewardMessage": ":clap: You got an experience role!", # Replace that with the message you want to be sent when someone got a reward role.
-    "rewardMessageDel": 5 # Replace that with the value you want to wait before the reward message got deleted.
+    "rewardMessageDel": 5, # Replace that with the value you want to wait before the reward message got deleted.
+    "rewardChannelsAnnouncement": 929305410660368474 # Replace that with the channel ID you want to send rewards up in
 }
 # REWARDS
 rewards = {
