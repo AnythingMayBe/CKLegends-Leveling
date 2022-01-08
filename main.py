@@ -59,7 +59,7 @@ def addxp(guildid, user, channelid, content=None):
         toadd[guildid][user.id] += xp
     except KeyError:
         toadd[guildid][user.id] = 0
-    logging.debug(f"{user.id} got {xp} xp.")
+    logging.debug(f"{user.id} got {xp} xp in guild " + str(guildid) + ".")
 
 # Bot
 @bot.event
