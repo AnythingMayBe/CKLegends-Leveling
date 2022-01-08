@@ -114,6 +114,12 @@ async def stop(ctx):
         await ctx.send(":warning: If you started the bot from an automatic restart script (maded by us), please save the database and stop it by terminating the process (use CTRL+C in the terminal window).")
         shutdown()
 
+# Errors
+@bot.event
+async def on_command_error(ctx, error):
+    await ctx.send(":x: Your command cannot be executed due to " + str(error))
+    logging.warning("\"" + str(error) + "\" after execution of \"" + str(ctx.message.content) + "\" by user ID " + str(ctx.message.author.id))
+
 try:
     bot.run(config["token"])
     logging.critical("The bot has shut down. Saving database.")
