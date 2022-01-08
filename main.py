@@ -122,12 +122,18 @@ async def voiceXpTask():
 # Commands
 @bot.command(aliases=["xp", "niveau", "niveaux", "level"])
 async def levels(ctx, user : discord.User):
-    
+    if type(user.id) != int:
+        sfile.write("User ID " + str(user.id) + " is not an int.")
+        await ctx.send(":x: The provided user is invalid.")
+        return
     xp = cursor.execute("SELECT xp FROM content WHERE id=" + str(user.id) + ";")
     for row in xp:
         print(str(row[0]))
     embed=discord.Embed()
-    embed.add_field(name="XP of user " + str(user.name), value=str(row[0]), inline=False)
+    try:
+        embed.add_field(name="XP of user " + str(user.name), value=str(row[0]), inline=False)
+    except UnboundLocalError:
+        embed.add_field(name="XP of user " + str(user.name), value="0", inline=False)
     await ctx.send(embed=embed)
 
 # Admin commands
