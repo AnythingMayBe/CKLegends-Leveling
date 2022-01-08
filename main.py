@@ -48,6 +48,17 @@ def shutdown(): # The function who will be executed when stopping the bot
     sfile.close()
     exit()
 
+def addxp(guildid, userid, channelid, content=None):
+    if channelid in config["ignoredChannels"]: # Check if channel is set to don't be recorded
+        if content != None: logging.debug("Ignored xp promotion for user ID " + str(userid) + " containing \"" + str(content) + "\" because it was in an ignored channel, " + str(channelid) + " in guild " + str(guildid) + ".")
+        else: logging.debug("Ignored xp promotion for user ID " + str(userid) + " because it was in an ignored channel, " + str(channelid)) + " in guild " + str(guildid) + "."
+        return
+    xp = randint(config["addMessageMin"], config["addMessageMax"])
+    try:
+        toadd[guildid][userid] += xp
+    except KeyError:
+        toadd[guildid][userid] = 0
+    logging.debug(f"{userid} got {xp} xp.")
 
 # Bot
 @bot.event
@@ -86,16 +97,9 @@ async def on_message(message):
 
     waitForMessages[message.author.id] = time() # Reset timeout
 
-    if message.channel.id in config["ignoredChannels"]: # Check if channel is set to don't be recorded
-        logging.debug("Ignored message from user ID " + str(message.author.id) + " containing \"" + str(message.content) + "\" because it was sent in an ignored channel, " + str(message.channel.id) + ".")
-        return
+    
     # Add xp
-    xp = randint(config["addMessageMin"], config["addMessageMax"])
-    try:
-        toadd[message.guild.id][message.author.id] += xp
-    except KeyError:
-        toadd[message.guild.id][message.author.id] = 0
-    logging.debug(f"{message.author.id} got {xp} xp.")
+    addxp(message.guild.id, message.author.id, message.channel.id, message.content)
     
 @bot.command(aliases=["xp", "niveau", "niveaux", "level"])
 async def levels(ctx, user : discord.User):
