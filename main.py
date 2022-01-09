@@ -167,6 +167,9 @@ async def shop(ctx, product : int =None):
             await ctx.send("You successfully buyed **" + store[element] + "**\nAn administrator will contact you shortly.")
             c = discord.utils.get(ctx.guild.channels, id=config["rewardChannelsAnnouncement"])
             await c.send(f"{ctx.author.mention} purchased product ID **{product}**, name **{store[element]}** for **{element}** XP.")
+            temp[f"{ctx.author.name}-shop"] = False
+    if temp[f"{ctx.author.name}-shop"] != False:
+        await ctx.send(":x: Unkown product exists. Is this ID correct?")
 
 
 # Admin commands
