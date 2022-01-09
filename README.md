@@ -54,3 +54,25 @@ Aliases: `save-db`, `save-database`, `db-save`, `dbsave`, `database-save`, `save
 > It sets the xp for a person in a specified guild.
 Usage: `stexp <guild ID> <user ID> <xp>`
 Example of usage: `--setxp 883621480007606282 699330746686373898 5000`
+
+## Files
+### ./logs/
+> This directory saves all logs into text files. It can be required to use that for debugging purposes.
+
+### ./security/logs/
+> This directory saves the security logs, for example if someone tries to do an SQL Injection on our database.
+
+### ./config.py
+> That's the configuration file.
+
+### ./xp.db
+> That's the database.
+
+### /§start.py
+> That's a script who starts infinitly the bot. Use CTRL+C to stop the script.
+
+### ./main.py
+> That's the bot, I did that in one file because I'm lazy.
+
+### ./LICENSE
+> That's the Copyright notice you understand and use for legal purposes.
