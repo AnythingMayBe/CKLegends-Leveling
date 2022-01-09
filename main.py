@@ -50,12 +50,13 @@ def shutdown(): # The function who will be executed when stopping the bot
     sfile.close()
     exit()
 
-def addxp(guild, user, channelid, content=None):
+def addxp(type, guild, user, channelid, content=None):
     if channelid in config["ignoredChannels"]: # Check if channel is set to don't be recorded
         if content != None: logging.debug("Ignored xp promotion for user ID " + str(user.id) + " containing \"" + str(content) + "\" because it was in an ignored channel, " + str(channelid) + " in guild " + str(guild.id) + ".")
         else: logging.debug("Ignored xp promotion for user ID " + str(user.id) + " because it was in an ignored channel, " + str(channelid)) + " in guild " + str(guild.id) + "."
         return
-    xp = randint(config["addMessageMin"], config["addMessageMax"])
+    if type == "chat": xp = randint(config["addMessageMin"], config["addMessageMax"])
+    elif type == "voice": xp = randint(config["voiceXpRewardMin"], config["voiceXpRewardMax"])
     try:
         toadd[guild.id][user.id] += xp
     except KeyError:
@@ -104,7 +105,7 @@ async def on_message(message):
 
     
     # Add xp
-    addxp(message.guild, message.author, message.channel.id, message.content)
+    addxp("chat", message.guild, message.author, message.channel.id, message.content)
     
     # Role Reward
     for reward in rewards:
@@ -126,7 +127,7 @@ async def voiceXpTask():
             if type(channel) == discord.VoiceChannel:
                 logging.debug("Starting registering XP for users in voice channel ID " + str(channel.id) + ".")
                 for member in channel.members:
-                    addxp(guild, member, channel.id)
+                    addxp("voice", guild, member, channel.id)
             else:
                 logging.debug("Ignored channel ID " + str(channel.id) + " because it wasn't a voice channel.")
 
