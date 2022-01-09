@@ -160,6 +160,9 @@ async def shop(ctx, product : int =None):
     for element in store:
         temp[f"{ctx.author.name}-shop"] += 1
         if temp[f"{ctx.author.name}-shop"] == int(product):
+            if toadd[ctx.guild.id][ctx.author.id] < element:
+                await ctx.send(":x: You do not have enough xp to buy that.")
+                return
             try:
                 toadd[ctx.guild.id][ctx.author.id] -= element
             except KeyError:
