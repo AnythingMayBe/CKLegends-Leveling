@@ -165,6 +165,8 @@ async def shop(ctx, product : int =None):
             except KeyError:
                 toadd[ctx.guild.id][ctx.author.id] = -element
             await ctx.send("You successfully buyed **" + store[element] + "**\nAn administrator will contact you shortly.")
+            c = discord.utils.get(ctx.guild.channels, id=config["rewardChannelsAnnouncement"])
+            await c.send(f"{ctx.author.mention} purchased product ID **{product}**, name **{store[element]}** for **{element}** XP.")
 
 
 # Admin commands
