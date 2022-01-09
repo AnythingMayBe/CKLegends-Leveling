@@ -11,6 +11,7 @@ from time import time
 from asyncio import sleep
 
 # Init
+temp = {} # Temp variable used for lots of things
 bot = commands.AutoShardedBot(command_prefix=config["prefix"], shard_count=config["shards"]) # Bot object, used for all actions maded by the bot (not the program)
 sfile = open("security/logs/" + datetime.now().strftime("%h-%d-%y"), 'a') # Security file log
 toadd = {} # Temp variable (saved with SQLite) containing guilds and user xps
@@ -148,12 +149,23 @@ async def levels(ctx, user : discord.User):
     await ctx.send(embed=embed)
 
 @bot.command(aliases=["purchase", "buy", "store"])
-async def shop(ctx, product=None):
+async def shop(ctx, product : int =None):
     if product == None:
         r = ""
         for element in store:
             r += f"**{element}XP** {store[element]}\n"
         await ctx.send(":shopping_bags: Here is a list of everything you can get from our store:\n" + r)
+        return
+    temp[f"{ctx.author.name}-shop"] = 0
+    for element in store:
+        temp[f"{ctx.author.name}-shop"] += 1
+        if temp[f"{ctx.author.name}-shop"] == int(product):
+            try:
+                toadd[ctx.guild.id][ctx.author.id] -= element
+            except KeyError:
+                toadd[ctx.guild.id][ctx.author.id] = -element
+            await ctx.send("You successfully buyed **" + store[element] + "**\nAn administrator will contact you shortly.")
+
 
 # Admin commands
 @bot.command(aliases = ["admin-stop", "adminstop", "stopadmin", "stop-admin", "shutdown", "admin-shutdown", "adminshutdown", "shutdownadmin", "shutdown-admin"])
