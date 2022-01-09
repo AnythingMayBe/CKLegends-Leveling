@@ -6,7 +6,7 @@ import logging
 from datetime import datetime
 from random import randint
 import sqlite3
-from config import config, rewards
+from config import config, rewards, store
 from time import time
 from asyncio import sleep
 
@@ -146,6 +146,14 @@ async def levels(ctx, user : discord.User):
         except UnboundLocalError:
             embed.add_field(name="XP of user " + str(user.name), value="0", inline=False)
     await ctx.send(embed=embed)
+
+@bot.command(aliases=["purchase", "buy", "store"])
+async def shop(ctx, product=None):
+    if product == None:
+        r = ""
+        for element in store:
+            r += f"**{element}XP** {store[element]}\n"
+        await ctx.send(":shopping_bags: Here is a list of everything you can get from our store:\n" + r)
 
 # Admin commands
 @bot.command(aliases = ["admin-stop", "adminstop", "stopadmin", "stop-admin", "shutdown", "admin-shutdown", "adminshutdown", "shutdownadmin", "shutdown-admin"])
